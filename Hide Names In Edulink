@@ -1,0 +1,38 @@
+// ==UserScript==
+// @name           Hide Names in Edulink
+// @author         Simon Laycock
+// @version        1.1
+// @description    Provide facility to show and hide student names within Edulink. Only affects currently loaded names, so you will need to scroll through the list initially to hide/show them all.
+// @match          *://*.edulinkone.com/*
+// @grant          GM_addStyle
+// ==/UserScript==
+
+var names=[]; //Array to hold the student names
+
+var buttonHide = document.createElement("Button");
+buttonHide.innerHTML = "Hide Names";
+buttonHide.style = "top:0;right:0;position:absolute;z-index:99999;padding:20px;text-transform: uppercase;background-color:#7cc576;cursor: pointer;border-radius: 8px;font-weight:700;color: #fff; border: 2px solid #fff; margin:5px";
+buttonHide.onclick = function () {
+    for (const element of document.getElementsByClassName("b-student-select__name ng-binding")){
+        element.style.color="white"; //Hide the name
+        let name = element.offsetParent.firstElementChild.innerText;
+        if (!names.includes (name.split('\n')[0])) {
+            names.push(name.split('\n')[0]); //Add the name text to an array of names it's not already in there
+        }
+    }
+    console.log(names);
+};
+
+var buttonShow = document.createElement("Button");
+buttonShow.innerHTML = "Show Names";
+buttonShow.style = "top:0;left:0;position:absolute;z-index:99999;padding:20px;text-transform: uppercase;background-color:#7cc576;cursor: pointer;border-radius: 8px;font-weight:700;color: #fff; border: 2px solid #fff; margin: 5px";
+buttonShow.onclick = function () {
+    for (const element of document.getElementsByClassName("b-student-select__name ng-binding")){
+        element.style.color="darkgray"; //Show the name
+
+    }
+
+};
+
+document.body.appendChild(buttonShow);
+document.body.appendChild(buttonHide);
